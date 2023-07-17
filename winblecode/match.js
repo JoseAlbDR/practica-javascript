@@ -3,6 +3,7 @@ const player1 = {
   name: "",
   score: 0,
   roundsWon: 0,
+  advantage: false,
 };
 
 const player2 = {
@@ -10,32 +11,74 @@ const player2 = {
   name: "",
   score: 0,
   roundsWon: 0,
+  advantage: false,
 };
 
 export default function createMatch(player1Name, player2Name) {
   player1.name = player1Name;
   player2.name = player2Name;
+  let deuce = false;
+
+  const handleWinner = (player) => {
+    player.roundsWon += 1;
+    resetRound();
+  };
 
   const resetRound = () => {
     player1.score = 0;
+    player1.advantage = false;
     player2.score = 0;
+    player2.advantage = false;
+    deuce = false;
+  };
+
+  const handleDeuce = (player) => {
+    if (player.id === 1 && player1.advantage) {
+      handleWinner(player1);
+      return;
+    }
+    if (player.id === 2 && player2.advantage) {
+      handleWinner(player2);
+      return;
+    }
+
+    if (player.id === 1 && player2.advantage) player2.advantage = false;
+    if (player.id === 2 && player1.advantage) player1.advantage = false;
+
+    if (player.id === 1 && !player1.advantage) player1.advantage = true;
+    if (player.id === 2 && !player2.advantage) player2.advantage = true;
   };
 
   const addScore = (player) => {
-    if (player.score === 40) {
-      player.roundsWon += 1;
-      resetRound();
+    if (deuce) {
+      handleDeuce(player);
+      return;
     }
 
-    player.score < 30 ? (player.score += 15) : (player.score += 10);
+    if (player.score === 40 && !deuce) {
+      handleWinner(player);
+      return;
+    } else {
+      player.score < 30 ? (player.score += 15) : (player.score += 10);
+    }
   };
 
   const pointWonBy = (id) => {
     id === 1 ? addScore(player1) : addScore(player2);
+    if (player1.score === 40 && player2.score === 40) deuce = true;
   };
 
   const getCurrentRoundScore = () => {
-    return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
+    if (deuce && !player1.advantage && !player2.advantage) return "Deuce";
+
+    if (deuce && player1.advantage && !player2.advantage)
+      return `${player1.name} advantage`;
+
+    if (deuce && !player1.advantage && player2.advantage)
+      return `${player2.name} advantage`;
+
+    if (!deuce)
+      return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
   };
 
   const getGameScore = () => {};

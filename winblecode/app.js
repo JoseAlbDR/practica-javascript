@@ -18,5 +18,9 @@ console.log(game.getCurrentRoundScore());
 
 game.pointWonBy(1);
 console.log(game.getCurrentRoundScore());
+
+game.pointWonBy(2);
+console.log(game.getCurrentRoundScore());
+
 game.pointWonBy(2);
 console.log(game.getCurrentRoundScore());
