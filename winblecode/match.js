@@ -1,4 +1,4 @@
-const player1 = {
+const initialPlayer1 = {
   id: 1,
   name: "",
   score: 0,
@@ -7,7 +7,7 @@ const player1 = {
   advantage: false,
 };
 
-const player2 = {
+const initialPlayer2 = {
   id: 2,
   name: "",
   score: 0,
@@ -16,13 +16,10 @@ const player2 = {
   advantage: false,
 };
 
-let winner = "";
-
 export default function createMatch(player1Name, player2Name) {
-  player1.name = player1Name;
-  player2.name = player2Name;
+  let player1 = { ...initialPlayer1, name: player1Name };
+  let player2 = { ...initialPlayer2, name: player2Name };
   let deuce = false;
-  winner = "";
 
   const getStats = () => {
     console.log(`${player1.name} games won: ${player1.gamesWon}`);
@@ -40,31 +37,30 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   // Reset variables before new round
-  const resetRound = () => {
+  function resetRound() {
     player1.score = 0;
     player1.advantage = false;
     player2.score = 0;
     player2.advantage = false;
     deuce = false;
-  };
+  }
 
-  const resetMatch = () => {
-    player1.name = "";
-    player1.score = 0;
-    player1.roundsWon = 0;
-    player1.gamesWon = 0;
-    player1.advantage = false;
-    player2.name = "";
-    player2.score = 0;
-    player2.roundsWon = 0;
-    player2.gamesWon = 0;
-    player2.advantage = false;
-  };
+  function resetMatch() {
+    player1 = { ...initialPlayer1 };
+    player2 = { ...initialPlayer2 };
+  }
 
   const handleDeuce = (player) => {
     // Player 1 wins a point with advantage
     if (player.id === 1 && player1.advantage) {
       handleWinner(player1);
+      return;
+    }
+
+    // Player 1 wins a point with Player 2 advantage
+    if (player.id === 1 && player2.advantage) {
+      player2.advantage = false;
+      deuce = true;
       return;
     }
 
@@ -74,28 +70,18 @@ export default function createMatch(player1Name, player2Name) {
       return;
     }
 
-    // Player 1 wins a point with Player 2 advantage
-    if (player.id === 1 && player2.advantage) {
-      player2.advantage = false;
-      return;
-    }
-
     // Player 2 wins a point with Player 1 advantage
     if (player.id === 2 && player1.advantage) {
       player1.advantage = false;
+      deuce = true;
       return;
     }
 
-    // Player 1 wins a point with no advantage
-    if (player.id === 1 && !player1.advantage) {
+    // No player has advantage
+    if (player.id === 1) {
       player1.advantage = true;
-      return;
-    }
-
-    // Player 2 wins a point with no advantage
-    if (player.id === 2 && !player2.advantage) {
+    } else {
       player2.advantage = true;
-      return;
     }
   };
 
@@ -115,15 +101,21 @@ export default function createMatch(player1Name, player2Name) {
 
   const pointWonBy = (id) => {
     id === 1 ? addScore(player1) : addScore(player2);
-    if (player1.score === 40 && player2.score === 40) deuce = true;
+    if (
+      player1.score === 40 &&
+      player2.score === 40 &&
+      !player1.advantage &&
+      !player2.advantage
+    )
+      deuce = true;
   };
 
   const getCurrentRoundScore = () => {
-    if (deuce && !player1.advantage && !player2.advantage) return "Deuce";
-
     if (player1.advantage) return `Advantage ${player1.name} `;
 
     if (player2.advantage) return `Advantage ${player2.name} `;
+
+    if (deuce) return "Deuce";
 
     if (!deuce)
       return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
@@ -139,12 +131,10 @@ export default function createMatch(player1Name, player2Name) {
 
   const getWinner = () => {
     if (player1.gamesWon === 4 || player1.gamesWon - player2.gamesWon === 2) {
-      winner = player1.name;
       return `${player1.name} wins`;
     }
 
     if (player2.gamesWon === 4 || player2.gamesWon - player1.gamesWon === 2) {
-      winner = player2.name;
       return `${player2.name} wins`;
     }
 
@@ -161,5 +151,3 @@ export default function createMatch(player1Name, player2Name) {
     resetMatch,
   };
 }
-
-export { winner };
