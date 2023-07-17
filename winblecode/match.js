@@ -16,7 +16,9 @@ export const createMatch = (player1Name, player2Name) => {
 
   const pointWonBy = (id) => {};
 
-  const getCurrentRoundsScore = () => {};
+  const getCurrentRoundsScore = () => {
+    return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
+  };
 
   const getGameScore = () => {};
 
