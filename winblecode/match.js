@@ -16,10 +16,13 @@ const player2 = {
   advantage: false,
 };
 
+let winner = "";
+
 export default function createMatch(player1Name, player2Name) {
   player1.name = player1Name;
   player2.name = player2Name;
   let deuce = false;
+  winner = "";
 
   // When there is a winner
   const handleWinner = (player) => {
@@ -110,10 +113,25 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const getWinner = () => {
-    if (player1.gamesWon - player2.gamesWon === 2)
+    if (player1.gamesWon === 4) {
+      winner = player1.name;
       return `${player1.name} wins`;
-    if (player2.gamesWon - player1.gamesWon === 2)
+    }
+
+    if (player2.gamesWon === 4) {
+      winner = player2.name;
       return `${player2.name} wins`;
+    }
+
+    if (player1.gamesWon - player2.gamesWon === 2) {
+      winner = player1.name;
+      return `${player1.name} wins`;
+    }
+
+    if (player2.gamesWon - player1.gamesWon === 2) {
+      winner = player2.name;
+      return `${player2.name} wins`;
+    }
 
     return "No winner yet.";
   };
@@ -124,5 +142,8 @@ export default function createMatch(player1Name, player2Name) {
     getGameScore,
     getMatchScore,
     getWinner,
+    winner,
   };
 }
+
+export { winner };
