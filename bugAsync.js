@@ -23,3 +23,15 @@ function obtenerUsuarioPromise(id) {
 
 const usuarioPromise = await obtenerUsuarioPromise(1);
 console.log(usuarioPromise);
+
+function obtenerUsuarioCallback(id, callback) {
+  setTimeout(() => {
+    if (id === 1) {
+      return callback({ id: 1, nombre: "John Doe" });
+    }
+  }, 2000);
+}
+
+obtenerUsuarioCallback(1, (usuario) => {
+  console.log(usuario);
+});
