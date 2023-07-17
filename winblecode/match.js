@@ -1,22 +1,22 @@
-player1 = {
+const player1 = {
   id: 1,
   name: "",
   score: 0,
 };
 
-player2 = {
+const player2 = {
   id: 2,
   name: "",
   score: 0,
 };
 
-export const createMatch = (player1Name, player2Name) => {
+export default function createMatch(player1Name, player2Name) {
   player1.name = player1Name;
   player2.name = player2Name;
 
   const pointWonBy = (id) => {};
 
-  const getCurrentRoundsScore = () => {
+  const getCurrentRoundScore = () => {
     return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
   };
 
@@ -28,9 +28,9 @@ export const createMatch = (player1Name, player2Name) => {
 
   return {
     pointWonBy,
-    getCurrentRoundsScore,
+    getCurrentRoundScore,
     getGameScore,
     getMatchScore,
     getWinner,
   };
-};
+}
