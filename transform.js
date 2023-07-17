@@ -57,3 +57,13 @@ const developerByTech = (tech) => {
 const desarrolladoresJavascript = developerByTech("JavaScript");
 
 console.log(desarrolladoresJavascript());
+
+const showAllProyects = (developers) => {
+  return developers.flatMap((developer) =>
+    developer.proyectos.map((proyecto) => proyecto.nombre)
+  );
+};
+
+const nombresProyectos = showAllProyects(datos);
+
+console.log(nombresProyectos);
