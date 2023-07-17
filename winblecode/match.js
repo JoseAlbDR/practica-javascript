@@ -1,5 +1,5 @@
-const initialPlayer1 = {
-  id: 1,
+const initialPlayer = {
+  id: 0,
   name: "",
   score: 0,
   roundsWon: 0,
@@ -7,29 +7,26 @@ const initialPlayer1 = {
   advantage: false,
 };
 
-const initialPlayer2 = {
-  id: 2,
-  name: "",
-  score: 0,
-  roundsWon: 0,
-  gamesWon: 0,
-  advantage: false,
-};
+const SCORE_DEUCE = 40;
+const ROUNDS_TO_WIN = 4;
+const GAME_WIN_MARGIN = 2;
 
 export default function createMatch(player1Name, player2Name) {
-  let player1 = { ...initialPlayer1, name: player1Name };
-  let player2 = { ...initialPlayer2, name: player2Name };
+  let player1 = { ...initialPlayer, id: 1, name: player1Name };
+  let player2 = { ...initialPlayer, id: 2, name: player2Name };
+  const players = [player1, player2];
   let deuce = false;
 
   const getStats = () => {
-    console.log(`${player1.name} games won: ${player1.gamesWon}`);
-    console.log(`${player2.name} games won: ${player2.gamesWon}`);
+    players.forEach((player) => {
+      console.log(`${player.name} games won: ${player.gamesWon}`);
+    });
   };
 
   // When there is a winner
   const handleWinner = (player) => {
     player.roundsWon += 1;
-    if (player.roundsWon === 4) {
+    if (player.roundsWon === ROUNDS_TO_WIN) {
       player.gamesWon += 1;
       player.roundsWon = 0;
     }
@@ -38,16 +35,16 @@ export default function createMatch(player1Name, player2Name) {
 
   // Reset variables before new round
   function resetRound() {
-    player1.score = 0;
-    player1.advantage = false;
-    player2.score = 0;
-    player2.advantage = false;
+    players.forEach((player) => {
+      player.score = 0;
+      player.advantage = false;
+    });
     deuce = false;
   }
 
   function resetMatch() {
-    player1 = { ...initialPlayer1 };
-    player2 = { ...initialPlayer2 };
+    player1 = { ...initialPlayer };
+    player2 = { ...initialPlayer };
   }
 
   const handleDeuce = (player) => {
@@ -91,7 +88,7 @@ export default function createMatch(player1Name, player2Name) {
       return;
     }
 
-    if (player.score === 40 && !deuce) {
+    if (player.score === SCORE_DEUCE && !deuce) {
       handleWinner(player);
       return;
     } else {
@@ -102,8 +99,8 @@ export default function createMatch(player1Name, player2Name) {
   const pointWonBy = (id) => {
     id === 1 ? addScore(player1) : addScore(player2);
     if (
-      player1.score === 40 &&
-      player2.score === 40 &&
+      player1.score === SCORE_DEUCE &&
+      player2.score === SCORE_DEUCE &&
       !player1.advantage &&
       !player2.advantage
     )
@@ -130,11 +127,17 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const getWinner = () => {
-    if (player1.gamesWon === 4 || player1.gamesWon - player2.gamesWon === 2) {
+    if (
+      player1.gamesWon === ROUNDS_TO_WIN ||
+      player1.gamesWon - player2.gamesWon === GAME_WIN_MARGIN
+    ) {
       return `${player1.name} wins`;
     }
 
-    if (player2.gamesWon === 4 || player2.gamesWon - player1.gamesWon === 2) {
+    if (
+      player2.gamesWon === ROUNDS_TO_WIN ||
+      player2.gamesWon - player1.gamesWon === GAME_WIN_MARGIN
+    ) {
       return `${player2.name} wins`;
     }
 
