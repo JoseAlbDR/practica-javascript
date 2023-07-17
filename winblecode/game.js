@@ -14,8 +14,21 @@ const randomPoint = function () {
 
 const getRandomPlayers = function (players) {
   const shufled = [...players].sort(() => Math.random() - 0.5);
-
   return shufled.slice(0, 2);
+};
+
+const showSummary = function (game) {
+  console.log("Group A Winner: ", winner);
+  console.log("Final result:");
+  game.getStats();
+  game.resetMatch();
+};
+
+const simulateMatch = function (game) {
+  while (winner === "") {
+    game.pointWonBy(randomPoint());
+    game.getWinner();
+  }
 };
 
 export default function gameLoop() {
@@ -23,34 +36,25 @@ export default function gameLoop() {
   const groupB = players.filter((player) => !groupA.includes(player));
   const groupC = [];
 
-  console.log("Group A: ", groupA);
-  console.log("Group B: ", groupB);
-
+  console.log("Group A: ", groupA.join(" - "));
   const game1 = createMatch(...groupA);
+  simulateMatch(game1);
+  showSummary(game1);
+  groupC.push(winner);
+  console.log("\n");
 
-  while (winner === "") {
-    game1.pointWonBy(randomPoint());
-    game1.getWinner();
-  }
-  const groupAWinner = winner;
-  console.log("Group A Winner: ", groupAWinner);
-  groupC.push(groupAWinner);
-
+  console.log("Group B: ", groupB.join(" - "));
   const game2 = createMatch(...groupB);
-  while (winner === "") {
-    game2.pointWonBy(randomPoint());
-    game2.getWinner();
-  }
-  const groupBWinner = winner;
-  console.log("Group B Winner: ", groupBWinner);
-  groupC.push(groupBWinner);
+  simulateMatch(game2);
+  showSummary(game2);
+  groupC.push(winner);
+  console.log("\n");
 
-  console.log("Group C: ", groupC);
+  console.log("Group C: ", groupC.join(" - "));
   const finalGame = createMatch(...groupC);
-  while (winner === "") {
-    finalGame.pointWonBy(randomPoint());
-    finalGame.getWinner();
-  }
+  simulateMatch(finalGame);
+  showSummary(finalGame);
+  console.log("\n");
 
-  console.log("Final Winner: ", winner);
+  console.log(`THE WINNER IS: ${winner}`);
 }
