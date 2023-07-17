@@ -3,6 +3,7 @@ const player1 = {
   name: "",
   score: 0,
   roundsWon: 0,
+  gamesWon: 0,
   advantage: false,
 };
 
@@ -11,6 +12,7 @@ const player2 = {
   name: "",
   score: 0,
   roundsWon: 0,
+  gamesWon: 0,
   advantage: false,
 };
 
@@ -21,6 +23,10 @@ export default function createMatch(player1Name, player2Name) {
 
   const handleWinner = (player) => {
     player.roundsWon += 1;
+    if (player.roundsWon === 4) {
+      player.gamesWon += 1;
+      player.roundsWon = 0;
+    }
     resetRound();
   };
 
@@ -42,11 +48,23 @@ export default function createMatch(player1Name, player2Name) {
       return;
     }
 
-    if (player.id === 1 && player2.advantage) player2.advantage = false;
-    if (player.id === 2 && player1.advantage) player1.advantage = false;
+    if (player.id === 1 && player2.advantage) {
+      player2.advantage = false;
+      return;
+    }
+    if (player.id === 2 && player1.advantage) {
+      player1.advantage = false;
+      return;
+    }
 
-    if (player.id === 1 && !player1.advantage) player1.advantage = true;
-    if (player.id === 2 && !player2.advantage) player2.advantage = true;
+    if (player.id === 1 && !player1.advantage) {
+      player1.advantage = true;
+      return;
+    }
+    if (player.id === 2 && !player2.advantage) {
+      player2.advantage = true;
+      return;
+    }
   };
 
   const addScore = (player) => {
@@ -72,20 +90,31 @@ export default function createMatch(player1Name, player2Name) {
     if (deuce && !player1.advantage && !player2.advantage) return "Deuce";
 
     if (deuce && player1.advantage && !player2.advantage)
-      return `${player1.name} advantage`;
+      return `Advantage ${player1.name} `;
 
     if (deuce && !player1.advantage && player2.advantage)
-      return `${player2.name} advantage`;
+      return `Advantage ${player2.name} `;
 
     if (!deuce)
       return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
   };
 
-  const getGameScore = () => {};
+  const getGameScore = () => {
+    return `Rounds won:\n${player1.name} ${player1.roundsWon} \n${player2.name} ${player2.roundsWon}`;
+  };
 
-  const getMatchScore = () => {};
+  const getMatchScore = () => {
+    return `Games won:\n${player1.name} ${player1.gamesWon} \n${player2.name} ${player2.gamesWon}`;
+  };
 
-  const getWinner = () => {};
+  const getWinner = () => {
+    if (player1.gamesWon - player2.gamesWon === 2)
+      return `${player1.name} wins`;
+    if (player2.gamesWon - player1.gamesWon === 2)
+      return `${player2.name} wins`;
+
+    return "No winner yet.";
+  };
 
   return {
     pointWonBy,
