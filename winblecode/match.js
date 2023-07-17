@@ -62,28 +62,37 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const handleDeuce = (player) => {
+    // Player 1 wins a point with advantage
     if (player.id === 1 && player1.advantage) {
       handleWinner(player1);
       return;
     }
+
+    // Player 2 wins a point with advantage
     if (player.id === 2 && player2.advantage) {
       handleWinner(player2);
       return;
     }
 
+    // Player 1 wins a point with Player 2 advantage
     if (player.id === 1 && player2.advantage) {
       player2.advantage = false;
       return;
     }
+
+    // Player 2 wins a point with Player 1 advantage
     if (player.id === 2 && player1.advantage) {
       player1.advantage = false;
       return;
     }
 
+    // Player 1 wins a point with no advantage
     if (player.id === 1 && !player1.advantage) {
       player1.advantage = true;
       return;
     }
+
+    // Player 2 wins a point with no advantage
     if (player.id === 2 && !player2.advantage) {
       player2.advantage = true;
       return;
@@ -112,11 +121,9 @@ export default function createMatch(player1Name, player2Name) {
   const getCurrentRoundScore = () => {
     if (deuce && !player1.advantage && !player2.advantage) return "Deuce";
 
-    if (deuce && player1.advantage && !player2.advantage)
-      return `Advantage ${player1.name} `;
+    if (player1.advantage) return `Advantage ${player1.name} `;
 
-    if (deuce && !player1.advantage && player2.advantage)
-      return `Advantage ${player2.name} `;
+    if (player2.advantage) return `Advantage ${player2.name} `;
 
     if (!deuce)
       return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
@@ -131,27 +138,13 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const getWinner = () => {
-    if (player1.gamesWon === 4) {
+    if (player1.gamesWon === 4 || player1.gamesWon - player2.gamesWon === 2) {
       winner = player1.name;
-
       return `${player1.name} wins`;
     }
 
-    if (player2.gamesWon === 4) {
+    if (player2.gamesWon === 4 || player2.gamesWon - player1.gamesWon === 2) {
       winner = player2.name;
-
-      return `${player2.name} wins`;
-    }
-
-    if (player1.gamesWon - player2.gamesWon === 2) {
-      winner = player1.name;
-
-      return `${player1.name} wins`;
-    }
-
-    if (player2.gamesWon - player1.gamesWon === 2) {
-      winner = player2.name;
-
       return `${player2.name} wins`;
     }
 
