@@ -45,3 +45,15 @@ const datos = [
     ],
   },
 ];
+
+const developerByTech = (tech) => {
+  const technology = tech;
+  return () =>
+    JSON.stringify(
+      datos.filter((developer) => developer.habilidades.includes(technology))
+    );
+};
+
+const desarrolladoresJavascript = developerByTech("JavaScript");
+
+console.log(desarrolladoresJavascript());
