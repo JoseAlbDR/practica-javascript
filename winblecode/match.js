@@ -21,6 +21,7 @@ export default function createMatch(player1Name, player2Name) {
   player2.name = player2Name;
   let deuce = false;
 
+  // When there is a winner
   const handleWinner = (player) => {
     player.roundsWon += 1;
     if (player.roundsWon === 4) {
@@ -30,6 +31,7 @@ export default function createMatch(player1Name, player2Name) {
     resetRound();
   };
 
+  // Reset variables before new round
   const resetRound = () => {
     player1.score = 0;
     player1.advantage = false;
