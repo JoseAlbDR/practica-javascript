@@ -9,3 +9,8 @@ player2 = {
   name: "",
   score: 0,
 };
+
+export const createMatch = (player1Name, player2Name) => {
+  player1.name = player1Name;
+  player2.name = player2Name;
+};
