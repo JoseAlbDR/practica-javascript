@@ -24,6 +24,11 @@ export default function createMatch(player1Name, player2Name) {
   let deuce = false;
   winner = "";
 
+  const getStats = () => {
+    console.log(`${player1.name} games won: ${player1.gamesWon}`);
+    console.log(`${player2.name} games won: ${player2.gamesWon}`);
+  };
+
   // When there is a winner
   const handleWinner = (player) => {
     player.roundsWon += 1;
@@ -41,6 +46,19 @@ export default function createMatch(player1Name, player2Name) {
     player2.score = 0;
     player2.advantage = false;
     deuce = false;
+  };
+
+  const resetMatch = () => {
+    player1.name = "";
+    player1.score = 0;
+    player1.roundsWon = 0;
+    player1.gamesWon = 0;
+    player1.advantage = false;
+    player2.name = "";
+    player2.score = 0;
+    player2.roundsWon = 0;
+    player2.gamesWon = 0;
+    player2.advantage = false;
   };
 
   const handleDeuce = (player) => {
@@ -115,21 +133,25 @@ export default function createMatch(player1Name, player2Name) {
   const getWinner = () => {
     if (player1.gamesWon === 4) {
       winner = player1.name;
+
       return `${player1.name} wins`;
     }
 
     if (player2.gamesWon === 4) {
       winner = player2.name;
+
       return `${player2.name} wins`;
     }
 
     if (player1.gamesWon - player2.gamesWon === 2) {
       winner = player1.name;
+
       return `${player1.name} wins`;
     }
 
     if (player2.gamesWon - player1.gamesWon === 2) {
       winner = player2.name;
+
       return `${player2.name} wins`;
     }
 
@@ -142,7 +164,8 @@ export default function createMatch(player1Name, player2Name) {
     getGameScore,
     getMatchScore,
     getWinner,
-    winner,
+    getStats,
+    resetMatch,
   };
 }
 
