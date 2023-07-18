@@ -47,44 +47,29 @@ export default function createMatch(player1Name, player2Name) {
     player2 = { ...initialPlayer };
   }
 
-  const handleDeuce = (player) => {
-    // Player 1 wins a point with advantage
-    if (player.id === 1 && player1.advantage) {
-      handleWinner(player1);
+  const handleDeucePhase = (player) => {
+    const oponent = players.find((p) => p.id !== player.id);
+
+    // If player scores with advantage wins
+    if (player.advantage) {
+      handleWinner(player);
       return;
     }
 
-    // Player 1 wins a point with Player 2 advantage
-    if (player.id === 1 && player2.advantage) {
-      player2.advantage = false;
+    // if player scores with oponent advantage is deuce
+    if (oponent.advantage) {
+      oponent.advantage = false;
       deuce = true;
       return;
     }
 
-    // Player 2 wins a point with advantage
-    if (player.id === 2 && player2.advantage) {
-      handleWinner(player2);
-      return;
-    }
-
-    // Player 2 wins a point with Player 1 advantage
-    if (player.id === 2 && player1.advantage) {
-      player1.advantage = false;
-      deuce = true;
-      return;
-    }
-
-    // No player has advantage
-    if (player.id === 1) {
-      player1.advantage = true;
-    } else {
-      player2.advantage = true;
-    }
+    // No ones have advatage, set player advantage to true
+    player.advantage = true;
   };
 
   const addScore = (player) => {
     if (deuce) {
-      handleDeuce(player);
+      handleDeucePhase(player);
       return;
     }
 
