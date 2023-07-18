@@ -39,36 +39,28 @@ const simulateMatch = function (game) {
   }
 };
 
-// const match = function (groupLetter, group) {
-//   console.log(`Group ${groupLetter}: `, group.join(" -VS- "));
-//   const game1 = createMatch(...groupA);
-//   const winnerA = simulateMatch(game1);
-//   showSummary(game1, "A", winnerA);
-// };
+const playMatch = function (groupLetter, group) {
+  console.log(`Group ${groupLetter}: `, group.join(" -VS- "));
+  const game = createMatch(...group);
+  const winner = simulateMatch(game);
+  showSummary(game, groupLetter, winner);
+  return winner;
+};
 
 export default function gameLoop() {
   const groupA = getRandomPlayers(players);
   const groupB = players.filter((player) => !groupA.includes(player));
   const groupC = [];
 
-  console.log("Group A: ", groupA.join(" -VS- "));
-  const game1 = createMatch(...groupA);
-  const winnerA = simulateMatch(game1);
-  showSummary(game1, "A", winnerA);
+  const winnerA = playMatch("A", groupA);
   groupC.push(winnerA);
   console.log("\n");
 
-  console.log("Group B: ", groupB.join(" -VS- "));
-  const game2 = createMatch(...groupB);
-  const winnerB = simulateMatch(game2);
-  showSummary(game2, "B", winnerB);
+  const winnerB = playMatch("B", groupB);
   groupC.push(winnerB);
   console.log("\n");
 
-  console.log("Group C: ", groupC.join(" -VS- "));
-  const finalGame = createMatch(...groupC);
-  const finalWinner = simulateMatch(finalGame);
-  showSummary(finalGame, "C", finalWinner);
+  const finalWinner = playMatch("Final", groupC);
   console.log("\n");
 
   console.log(`THE WINNER IS: ${finalWinner}`);
