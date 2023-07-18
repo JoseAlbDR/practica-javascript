@@ -34,18 +34,18 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   // Reset variables before new round
-  function resetRound() {
+  const resetRound = () => {
     players.forEach((player) => {
       player.score = 0;
       player.advantage = false;
     });
     deuce = false;
-  }
+  };
 
-  function resetMatch() {
-    player1 = { ...initialPlayer };
-    player2 = { ...initialPlayer };
-  }
+  // function resetMatch() {
+  //   player1 = { ...initialPlayer };
+  //   player2 = { ...initialPlayer };
+  // }
 
   const handleDeucePhase = (player) => {
     const oponent = players.find((p) => p.id !== player.id);
@@ -136,6 +136,6 @@ export default function createMatch(player1Name, player2Name) {
     getMatchScore,
     getWinner,
     getStats,
-    resetMatch,
+    // resetMatch,
   };
 }
