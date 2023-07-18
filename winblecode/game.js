@@ -20,7 +20,7 @@ const showSummary = function (game, group, winner) {
   console.log(`Group ${group} Winner: `, winner);
   console.log("Final result:");
   game.getStats();
-  game.resetMatch();
+  // game.resetMatch();
 };
 
 const simulateMatch = function (game) {
@@ -38,6 +38,13 @@ const simulateMatch = function (game) {
     }
   }
 };
+
+// const match = function (groupLetter, group) {
+//   console.log(`Group ${groupLetter}: `, group.join(" -VS- "));
+//   const game1 = createMatch(...groupA);
+//   const winnerA = simulateMatch(game1);
+//   showSummary(game1, "A", winnerA);
+// };
 
 export default function gameLoop() {
   const groupA = getRandomPlayers(players);
