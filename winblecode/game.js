@@ -20,12 +20,11 @@ const showSummary = function (game, group, winner) {
   console.log(`Group ${group} Winner: `, winner);
   console.log("Final result:");
   game.getStats();
-  // game.resetMatch();
 };
 
 const simulateMatch = function (game) {
-  let winner = "";
-  while (winner === "") {
+  let winner = null;
+  while (winner === null) {
     game.pointWonBy(randomPoint());
     winner = game.getWinner();
     if (winner !== "No winner yet.") {
@@ -34,7 +33,7 @@ const simulateMatch = function (game) {
         .splice(0, winner.split(" ").length - 1)
         .join(" ");
     } else {
-      winner = "";
+      winner = null;
     }
   }
 };
@@ -50,17 +49,17 @@ const playMatch = function (groupLetter, group) {
 export default function gameLoop() {
   const groupA = getRandomPlayers(players);
   const groupB = players.filter((player) => !groupA.includes(player));
-  const groupC = [];
+  const finalGroup = [];
 
   const winnerA = playMatch("A", groupA);
-  groupC.push(winnerA);
+  finalGroup.push(winnerA);
   console.log("\n");
 
   const winnerB = playMatch("B", groupB);
-  groupC.push(winnerB);
+  finalGroup.push(winnerB);
   console.log("\n");
 
-  const finalWinner = playMatch("Final", groupC);
+  const finalWinner = playMatch("Final", finalGroup);
   console.log("\n");
 
   console.log(`THE WINNER IS: ${finalWinner}`);
