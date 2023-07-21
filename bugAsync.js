@@ -11,11 +11,14 @@ function obtenerUsuario(id) {
 const usuario = obtenerUsuario(1);
 console.log(usuario);
 
+// With a promise
 function obtenerUsuarioPromise(id) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (id === 1) {
         resolve({ id: 1, nombre: "John Doe" });
+      } else {
+        reject("Wrong user id");
       }
     }, 2000);
   });
@@ -24,10 +27,13 @@ function obtenerUsuarioPromise(id) {
 const usuarioPromise = await obtenerUsuarioPromise(1);
 console.log(usuarioPromise);
 
+// With a callback
 function obtenerUsuarioCallback(id, callback) {
   setTimeout(() => {
     if (id === 1) {
       return callback({ id: 1, nombre: "John Doe" });
+    } else {
+      return callback("Wrong user id");
     }
   }, 2000);
 }
