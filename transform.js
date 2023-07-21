@@ -46,18 +46,19 @@ const datos = [
   },
 ];
 
+// Pass the tech return a function to get all developers that work with that tech
 const developerByTech = (tech) => {
-  const technology = tech;
   return () =>
     JSON.stringify(
-      datos.filter((developer) => developer.habilidades.includes(technology))
+      datos.filter((developer) => developer.habilidades.includes(tech))
     );
 };
 
+// Create a function to show all devs that works with JavaScript
 const desarrolladoresJavascript = developerByTech("JavaScript");
-
 console.log(desarrolladoresJavascript());
 
+// flatMap to remove one anidation level in array
 const showAllProyects = (developers) => {
   return developers.flatMap((developer) =>
     developer.proyectos.map((proyecto) => proyecto.nombre)
