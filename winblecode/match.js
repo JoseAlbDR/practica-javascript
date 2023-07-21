@@ -92,6 +92,10 @@ export default function createMatch(player1Name, player2Name) {
       deuce = true;
   };
 
+  const message = (option) => {
+    return `${option} won:\n${player1.name} ${player1.roundsWon} \n${player2.name} ${player2.roundsWon}`;
+  };
+
   const getCurrentRoundScore = () => {
     if (player1.advantage) return `Advantage ${player1.name} `;
 
@@ -104,11 +108,11 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const getGameScore = () => {
-    return `Rounds won:\n${player1.name} ${player1.roundsWon} \n${player2.name} ${player2.roundsWon}`;
+    return message("Rounds");
   };
 
   const getMatchScore = () => {
-    return `Games won:\n${player1.name} ${player1.gamesWon} \n${player2.name} ${player2.gamesWon}`;
+    return message("Games");
   };
 
   const getWinner = () => {
