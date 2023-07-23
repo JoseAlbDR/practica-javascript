@@ -10,6 +10,7 @@ const initialPlayer = {
 const SCORE_DEUCE = 40;
 const ROUNDS_TO_WIN = 4;
 const GAME_WIN_MARGIN = 2;
+const TOTAL_WIN = 7;
 
 export default function createMatch(player1Name, player2Name) {
   let player1 = { ...initialPlayer, id: 1, name: player1Name };
@@ -117,15 +118,17 @@ export default function createMatch(player1Name, player2Name) {
 
   const getWinner = () => {
     if (
-      player1.gamesWon === ROUNDS_TO_WIN ||
-      player1.gamesWon - player2.gamesWon === GAME_WIN_MARGIN
+      player1.gamesWon === TOTAL_WIN ||
+      (player1.gamesWon === ROUNDS_TO_WIN &&
+        player1.gamesWon - player2.gamesWon === GAME_WIN_MARGIN)
     ) {
       return `${player1.name} wins`;
     }
 
     if (
-      player2.gamesWon === ROUNDS_TO_WIN ||
-      player2.gamesWon - player1.gamesWon === GAME_WIN_MARGIN
+      player2.gamesWon === TOTAL_WIN ||
+      (player2.gamesWon === ROUNDS_TO_WIN &&
+        player2.gamesWon - player1.gamesWon === GAME_WIN_MARGIN)
     ) {
       return `${player2.name} wins`;
     }
