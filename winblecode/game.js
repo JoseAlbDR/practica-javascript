@@ -26,6 +26,7 @@ const simulateMatch = function (game) {
   let winner = null;
   while (!winner) {
     game.pointWonBy(randomPoint());
+    console.log(game.getCurrentRoundScore());
     if (game.getWinner()) return game.getWinner();
   }
 };
@@ -45,14 +46,20 @@ export default function gameLoop() {
 
   const winnerA = playMatch("A", groupA);
   finalGroup.push(winnerA);
-  console.log("\n");
+  console.log(
+    "------------------------------------------------------------------------------------"
+  );
 
   const winnerB = playMatch("B", groupB);
   finalGroup.push(winnerB);
-  console.log("\n");
+  console.log(
+    "------------------------------------------------------------------------------------"
+  );
 
   const finalWinner = playMatch("Final", finalGroup);
-  console.log("\n");
+  console.log(
+    "------------------------------------------------------------------------------------"
+  );
 
   console.log(`THE WINNER IS: ${finalWinner}`);
 }

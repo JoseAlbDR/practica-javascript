@@ -30,14 +30,23 @@ export default function createMatch(player1Name, player2Name) {
   const handleWinner = (player) => {
     const oponent = findOponent(player);
     player.roundsWon += 1;
+    console.log(
+      "--------------------------------------------------------------------"
+    );
     if (
       player.roundsWon === MAX_ROUNDS ||
-      (player.roundsWon === ROUNDS_TO_WIN &&
+      (player.roundsWon >= ROUNDS_TO_WIN &&
         player.roundsWon - oponent.roundsWon >= WIN_MARGIN)
     ) {
+      console.log(
+        `Game ${player.gamesWon + oponent.gamesWon + 1}: \n`,
+        getGameScore()
+      );
       player.gamesWon += 1;
       player.roundsWon = 0;
+      oponent.roundsWon = 0;
     }
+
     resetRound();
   };
 
@@ -127,7 +136,6 @@ export default function createMatch(player1Name, player2Name) {
         winner = player.name;
       }
     });
-
     return winner;
   };
 
