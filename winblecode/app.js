@@ -30,7 +30,6 @@ gameLoop();
 // console.log(game.getCurrentRoundScore());
 
 // game.pointWonBy(2);
-
 // console.log(game.getGameScore());
 
 // game.pointWonBy(2);
@@ -49,7 +48,6 @@ gameLoop();
 // game.pointWonBy(2);
 // game.pointWonBy(2);
 // game.pointWonBy(2);
-
 // console.log(game.getMatchScore());
 
 // game.pointWonBy(2);
