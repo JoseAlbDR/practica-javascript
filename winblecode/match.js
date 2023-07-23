@@ -9,8 +9,8 @@ const initialPlayer = {
 
 const SCORE_DEUCE = 40;
 const ROUNDS_TO_WIN = 4;
-const GAME_WIN_MARGIN = 2;
-const TOTAL_WIN = 7;
+const WIN_MARGIN = 2;
+const MAX_ROUNDS = 7;
 
 export default function createMatch(player1Name, player2Name) {
   let player1 = { ...initialPlayer, id: 1, name: player1Name };
@@ -24,10 +24,17 @@ export default function createMatch(player1Name, player2Name) {
     });
   };
 
+  const findOponent = (player) => players.find((p) => p.id !== player.id);
+
   // When there is a winner
   const handleWinner = (player) => {
+    const oponent = findOponent(player);
     player.roundsWon += 1;
-    if (player.roundsWon === ROUNDS_TO_WIN) {
+    if (
+      player.roundsWon === MAX_ROUNDS ||
+      (player.roundsWon === ROUNDS_TO_WIN &&
+        player.roundsWon - oponent.roundsWon >= WIN_MARGIN)
+    ) {
       player.gamesWon += 1;
       player.roundsWon = 0;
     }
@@ -43,13 +50,8 @@ export default function createMatch(player1Name, player2Name) {
     deuce = false;
   };
 
-  // function resetMatch() {
-  //   player1 = { ...initialPlayer };
-  //   player2 = { ...initialPlayer };
-  // }
-
   const handleDeucePhase = (player) => {
-    const oponent = players.find((p) => p.id !== player.id);
+    const oponent = findOponent(player);
 
     // If player scores with advantage wins
     if (player.advantage) {
@@ -94,7 +96,9 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const message = (option) => {
-    return `${option} won:\n${player1.name} ${player1.roundsWon} \n${player2.name} ${player2.roundsWon}`;
+    return `${option} won:\n${player1.name} ${
+      player1[`${option.toLowerCase()}Won`]
+    } \n${player2.name} ${player2[`${option.toLowerCase()}Won`]}`;
   };
 
   const getCurrentRoundScore = () => {
@@ -117,23 +121,14 @@ export default function createMatch(player1Name, player2Name) {
   };
 
   const getWinner = () => {
-    if (
-      player1.gamesWon === TOTAL_WIN ||
-      (player1.gamesWon === ROUNDS_TO_WIN &&
-        player1.gamesWon - player2.gamesWon === GAME_WIN_MARGIN)
-    ) {
-      return `${player1.name} wins`;
-    }
+    let winner = null;
+    players.forEach((player) => {
+      if (player.gamesWon === 2) {
+        winner = player.name;
+      }
+    });
 
-    if (
-      player2.gamesWon === TOTAL_WIN ||
-      (player2.gamesWon === ROUNDS_TO_WIN &&
-        player2.gamesWon - player1.gamesWon === GAME_WIN_MARGIN)
-    ) {
-      return `${player2.name} wins`;
-    }
-
-    return "No winner yet.";
+    return winner;
   };
 
   return {
@@ -143,6 +138,5 @@ export default function createMatch(player1Name, player2Name) {
     getMatchScore,
     getWinner,
     getStats,
-    // resetMatch,
   };
 }
