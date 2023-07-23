@@ -24,17 +24,9 @@ const showSummary = function (game, group, winner) {
 
 const simulateMatch = function (game) {
   let winner = null;
-  while (winner === null) {
+  while (!winner) {
     game.pointWonBy(randomPoint());
-    winner = game.getWinner();
-    if (winner !== "No winner yet.") {
-      return winner
-        .split(" ")
-        .splice(0, winner.split(" ").length - 1)
-        .join(" ");
-    } else {
-      winner = null;
-    }
+    if (game.getWinner()) return game.getWinner();
   }
 };
 
