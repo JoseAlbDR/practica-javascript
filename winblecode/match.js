@@ -30,9 +30,9 @@ export default function createMatch(player1Name, player2Name) {
   const handleWinner = (player) => {
     const oponent = findOponent(player);
     player.roundsWon += 1;
-    console.log(
-      "--------------------------------------------------------------------"
-    );
+    // console.log(
+    //   "--------------------------------------------------------------------"
+    // );
     if (
       player.roundsWon === MAX_ROUNDS ||
       (player.roundsWon >= ROUNDS_TO_WIN &&
@@ -93,15 +93,22 @@ export default function createMatch(player1Name, player2Name) {
     }
   };
 
-  const pointWonBy = (id) => {
-    id === 1 ? addScore(player1) : addScore(player2);
+  const checkDeuce = () => {
     if (
       player1.score === SCORE_DEUCE &&
       player2.score === SCORE_DEUCE &&
       !player1.advantage &&
       !player2.advantage
     )
-      deuce = true;
+      return true;
+  };
+
+  const pointWonBy = (id) => {
+    players.forEach((player) => {
+      if (player.id === id) addScore(player);
+    });
+
+    deuce = checkDeuce();
   };
 
   const message = (option) => {

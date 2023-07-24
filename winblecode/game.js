@@ -26,7 +26,7 @@ const simulateMatch = function (game) {
   let winner = null;
   while (!winner) {
     game.pointWonBy(randomPoint());
-    console.log(game.getCurrentRoundScore());
+    // console.log(game.getCurrentRoundScore());
     if (game.getWinner()) return game.getWinner();
   }
 };
