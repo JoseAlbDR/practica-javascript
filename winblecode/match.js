@@ -1,3 +1,4 @@
+// Initial State of Player object
 const initialPlayer = {
   id: 0,
   name: "",
@@ -7,6 +8,7 @@ const initialPlayer = {
   advantage: false,
 };
 
+// Global variables
 const SCORE_DEUCE = 40;
 const ROUNDS_TO_WIN = 4;
 const WIN_MARGIN = 2;
@@ -18,13 +20,17 @@ export default function createMatch(player1Name, player2Name) {
   const players = [player1, player2];
   let deuce = false;
 
-  const getStats = () => {
-    players.forEach((player) => {
-      console.log(`${player.name} games won: ${player.gamesWon}`);
-    });
-  };
-
+  // Finds the oponent given a player
   const findOponent = (player) => players.find((p) => p.id !== player.id);
+
+  // Reset variables before new round
+  const resetRound = () => {
+    players.forEach((player) => {
+      player.score = 0;
+      player.advantage = false;
+    });
+    deuce = false;
+  };
 
   // When there is a winner
   const handleWinner = (player) => {
@@ -50,15 +56,7 @@ export default function createMatch(player1Name, player2Name) {
     resetRound();
   };
 
-  // Reset variables before new round
-  const resetRound = () => {
-    players.forEach((player) => {
-      player.score = 0;
-      player.advantage = false;
-    });
-    deuce = false;
-  };
-
+  // Deuce phase 40-40
   const handleDeucePhase = (player) => {
     const oponent = findOponent(player);
 
@@ -75,10 +73,11 @@ export default function createMatch(player1Name, player2Name) {
       return;
     }
 
-    // No ones have advatage, set player advantage to true
+    // No ones have advantage, set player advantage to true
     player.advantage = true;
   };
 
+  // Add score logic
   const addScore = (player) => {
     if (deuce) {
       handleDeucePhase(player);
@@ -87,12 +86,19 @@ export default function createMatch(player1Name, player2Name) {
 
     if (player.score === SCORE_DEUCE && !deuce) {
       handleWinner(player);
-      return;
     } else {
       player.score < 30 ? (player.score += 15) : (player.score += 10);
     }
   };
 
+  // Message helper for getGameScore and getMatchScore
+  const message = (type) => {
+    return `${type} won:\n${player1.name} ${
+      player1[`${type.toLowerCase()}Won`]
+    } \n${player2.name} ${player2[`${type.toLowerCase()}Won`]}`;
+  };
+
+  // Deuce checker
   const checkDeuce = () => {
     if (
       player1.score === SCORE_DEUCE &&
@@ -103,20 +109,18 @@ export default function createMatch(player1Name, player2Name) {
       return true;
   };
 
+  // Public methods --------------------------------
+  // Add points to a player based on id
   const pointWonBy = (id) => {
     players.forEach((player) => {
       if (player.id === id) addScore(player);
     });
 
+    // Check if there is a deuce after giving points
     deuce = checkDeuce();
   };
 
-  const message = (option) => {
-    return `${option} won:\n${player1.name} ${
-      player1[`${option.toLowerCase()}Won`]
-    } \n${player2.name} ${player2[`${option.toLowerCase()}Won`]}`;
-  };
-
+  // Show current round score for both players
   const getCurrentRoundScore = () => {
     if (player1.advantage) return `Advantage ${player1.name} `;
 
@@ -128,14 +132,17 @@ export default function createMatch(player1Name, player2Name) {
       return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
   };
 
+  // Show global game score for both players
   const getGameScore = () => {
     return message("Rounds");
   };
 
+  // Show global match score for both players
   const getMatchScore = () => {
     return message("Games");
   };
 
+  // Show winner if there is one if not returns null
   const getWinner = () => {
     let winner = null;
     players.forEach((player) => {
@@ -144,6 +151,13 @@ export default function createMatch(player1Name, player2Name) {
       }
     });
     return winner;
+  };
+
+  // Show game stats for both players
+  const getStats = () => {
+    players.forEach((player) => {
+      console.log(`${player.name} games won: ${player.gamesWon}`);
+    });
   };
 
   return {
