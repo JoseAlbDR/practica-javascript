@@ -79,35 +79,26 @@ export default function createMatch(player1Name, player2Name) {
 
   // Add score logic
   const addScore = (player) => {
-    if (deuce) {
-      handleDeucePhase(player);
-      return;
-    }
+    if (deuce) return handleDeucePhase(player);
 
-    if (player.score === SCORE_DEUCE && !deuce) {
-      handleWinner(player);
-    } else {
-      player.score < 30 ? (player.score += 15) : (player.score += 10);
-    }
+    if (player.score === SCORE_DEUCE && !deuce) return handleWinner(player);
+
+    player.score < 30 ? (player.score += 15) : (player.score += 10);
   };
 
   // Message helper for getGameScore and getMatchScore
-  const message = (type) => {
-    return `${type} won:\n${player1.name} ${
-      player1[`${type.toLowerCase()}Won`]
-    } \n${player2.name} ${player2[`${type.toLowerCase()}Won`]}`;
-  };
+  // prettier-ignore
+  const message = (type) =>
+    `${type} won:
+    ${player1.name} ${player1[`${type.toLowerCase()}Won`]} 
+    ${player2.name} ${player2[`${type.toLowerCase()}Won`]}`;
 
   // Deuce checker
-  const checkDeuce = () => {
-    if (
-      player1.score === SCORE_DEUCE &&
-      player2.score === SCORE_DEUCE &&
-      !player1.advantage &&
-      !player2.advantage
-    )
-      return true;
-  };
+  const checkDeuce = () =>
+    player1.score === SCORE_DEUCE &&
+    player2.score === SCORE_DEUCE &&
+    !player1.advantage &&
+    !player2.advantage;
 
   // Public methods --------------------------------
   // Add points to a player based on id
@@ -128,19 +119,14 @@ export default function createMatch(player1Name, player2Name) {
 
     if (deuce) return "Deuce";
 
-    if (!deuce)
-      return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
+    return `${player1.name} ${player1.score} - ${player2.score} ${player2.name}`;
   };
 
   // Show global game score for both players
-  const getGameScore = () => {
-    return message("Rounds");
-  };
+  const getGameScore = () => message("Rounds");
 
   // Show global match score for both players
-  const getMatchScore = () => {
-    return message("Games");
-  };
+  const getMatchScore = () => message("Games");
 
   // Show winner if there is one if not returns null
   const getWinner = () => {
