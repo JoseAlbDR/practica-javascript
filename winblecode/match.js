@@ -61,10 +61,7 @@ export default function createMatch(player1Name, player2Name) {
     const oponent = findOponent(player);
 
     // If player scores with advantage wins
-    if (player.advantage) {
-      handleWinner(player);
-      return;
-    }
+    if (player.advantage) return handleWinner(player);
 
     // if player scores with oponent advantage is deuce
     if (oponent.advantage) {
@@ -132,18 +129,16 @@ export default function createMatch(player1Name, player2Name) {
   const getWinner = () => {
     let winner = null;
     players.forEach((player) => {
-      if (player.gamesWon === 2) {
-        winner = player.name;
-      }
+      if (player.gamesWon === 2) winner = player.name;
     });
     return winner;
   };
 
   // Show game stats for both players
   const getStats = () => {
-    players.forEach((player) => {
-      console.log(`${player.name} games won: ${player.gamesWon}`);
-    });
+    players.forEach((player) =>
+      console.log(`${player.name} games won: ${player.gamesWon}`)
+    );
   };
 
   return {

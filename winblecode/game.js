@@ -12,7 +12,7 @@ const randomPoint = function () {
 };
 
 const getRandomPlayers = function (players) {
-  const shufled = [...players].sort(() => Math.random() - 0.5);
+  const shufled = players.sort(() => Math.random() - 0.5);
   return shufled.slice(0, 2);
 };
 
