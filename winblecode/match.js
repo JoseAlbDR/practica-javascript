@@ -92,10 +92,7 @@ export default function createMatch(player1Name, player2Name) {
 
   // Deuce checker
   const checkDeuce = () =>
-    player1.score === SCORE_DEUCE &&
-    player2.score === SCORE_DEUCE &&
-    !player1.advantage &&
-    !player2.advantage;
+    player1.score === SCORE_DEUCE && player2.score === SCORE_DEUCE;
 
   // Public methods --------------------------------
   // Add points to a player based on id
