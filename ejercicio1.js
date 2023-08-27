@@ -1,6 +1,7 @@
 const alumno = {
   name: "Jose Alberto Delgado Robles",
   bootcamKnowledge: ["html", "css", "javascript", "react", "node.js"],
+  busquedaActiva: false,
   socialMedia: [
     {
       name: "github",
