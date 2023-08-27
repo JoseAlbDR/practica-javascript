@@ -41,7 +41,7 @@ const promedioNumeros = calcularPromedio(listaNumeros);
 ```
 
 ## Ejercicio 3 Transformaciones
-### [transform.js](https://github.com/JoseAlbDR/practica-javascript/blob/main/transform.js)https://github.com/JoseAlbDR/practica-javascript/blob/main/transform.js)
+### [transform.js](https://github.com/JoseAlbDR/practica-javascript/blob/main/transform.js)
 ```js
 const datos = [
   {
